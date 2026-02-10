@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Cart</h1>
+
+{% if not items %}
+  <p>Your cart is empty. <a href="/products">Go shopping</a>.</p>
+{% else %}
+<form method="post" action="/cart/update" id="cart-form">
+  <table class="table" aria-label="cart items">
+    <thead>
+      <tr><th>Item</th><th>Price</th><th>Qty</th><th>Line</th></tr>
+    </thead>
+    <tbody>
+      {% for it in items %}
+      <tr data-testid="cart-row" data-product-id="{{it.id}}">
+        <td>{{ it.name }}</td>
+        <td>${{ it.price }}</td>
+        <td>
+          <input type="number" name="qty_{{it.id}}" value="{{it.qty}}" min="0" max="9"
+                 data-testid="cart-qty" class="qty" />
+        </td>
+        <td data-testid="cart-line">${{ it.line }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="row gap">
+    <label>
+      Coupon
+      <input type="text" name="coupon" value="{{ coupon or '' }}" placeholder="SAVE10" data-testid="coupon" />
+    </label>
+    <label>
+      Shipping
+      <select name="shipping" data-testid="shipping">
+        <option value="standard" {% if shipping=='standard' %}selected{% endif %}>Standard</option>
+        <option value="express" {% if shipping=='express' %}selected{% endif %}>Express</option>
+      </select>
+    </label>
+    <button type="submit" class="btn" data-testid="update-cart">Update</button>
+  </div>
+
+  <div class="totals" aria-label="totals panel">
+    <div>Subtotal: <strong id="subtotal" data-testid="subtotal">${{ totals.subtotal }}</strong></div>
+    <div>Discount: <strong id="discount" data-testid="discount">${{ totals.discount }}</strong></div>
+    <div>Shipping: <strong id="shippingFee" data-testid="shippingFee">${{ totals.shipping }}</strong></div>
+    <div class="total">Total: <strong id="total" data-testid="total">${{ totals.total }}</strong></div>
+  </div>
+
+  <div class="row">
+    <a class="btn secondary" href="/products">Continue shopping</a>
+    <a class="btn" href="/checkout" data-testid="go-checkout">Proceed to checkout</a>
+  </div>
+</form>
+{% endif %}
+{% endblock %}

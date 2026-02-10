@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Checkout</h1>
+<p class="muted">Enter shipping details and pay with a test card.</p>
+
+<div class="totals compact">
+  <div>Subtotal: <strong data-testid="subtotal">${{ totals.subtotal }}</strong></div>
+  <div>Discount: <strong data-testid="discount">${{ totals.discount }}</strong></div>
+  <div>Shipping: <strong data-testid="shippingFee">${{ totals.shipping }}</strong></div>
+  <div class="total">Total: <strong data-testid="total">${{ totals.total }}</strong></div>
+</div>
+
+<form method="post" action="/pay" class="stack" id="pay-form">
+  <label>
+    Full name
+    <input name="name" value="{{ (form.name if form else '') }}" data-testid="name" />
+  </label>
+
+  <label>
+    Address
+    <input name="address" value="{{ (form.address if form else '') }}" data-testid="address" />
+  </label>
+
+  <fieldset class="fieldset">
+    <legend>Payment (test gateway)</legend>
+    <label>Card number
+      <input name="card" placeholder="4242 4242 4242 4242" value="{{ (form.card if form else '') }}" data-testid="card" />
+    </label>
+    <div class="row gap">
+      <label>Exp
+        <input name="exp" placeholder="12/30" value="{{ (form.exp if form else '') }}" data-testid="exp" />
+      </label>
+      <label>CVC
+        <input name="cvc" placeholder="123" value="{{ (form.cvc if form else '') }}" data-testid="cvc" />
+      </label>
+    </div>
+  </fieldset>
+
+  <button type="submit" class="btn" data-testid="pay">Pay</button>
+</form>
+
+<p class="muted small">
+  Success card: <code>4242 4242 4242 4242</code> • Decline card: <code>4000 0000 0000 0002</code>
+</p>
+{% endblock %}

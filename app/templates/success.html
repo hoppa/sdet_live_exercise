@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 data-testid="success-title">Payment successful 🎉</h1>
+<p>Your order <strong data-testid="order-id">#{{ order.id }}</strong> is confirmed.</p>
+
+<div class="card">
+  <h2 class="card-title">Summary</h2>
+  <div class="muted">Status: <strong data-testid="order-status">{{ order.status }}</strong></div>
+  <div class="totals compact">
+    <div>Total: <strong data-testid="total">${{ order.totals.total }}</strong></div>
+  </div>
+</div>
+
+<a href="/products" class="btn secondary">Back to products</a>
+{% endblock %}

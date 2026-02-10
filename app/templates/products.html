@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Products</h1>
+<p class="muted">Select a product and add it to the cart.</p>
+
+<div class="grid">
+  {% for p in products %}
+  <div class="card" data-testid="product-card" data-product-id="{{p.id}}">
+    <h2 class="card-title" data-testid="product-name">{{ p.name }}</h2>
+    <div class="price" data-testid="product-price">${{ "%.2f"|format(p.price_cents/100) }}</div>
+
+    <form method="post" action="/cart/add" class="row">
+      <input type="hidden" name="product_id" value="{{p.id}}" />
+      <label>
+        Qty
+        <input type="number" name="qty" value="1" min="1" max="9" data-testid="qty-input" />
+      </label>
+      <button type="submit" class="btn" data-testid="add-to-cart">Add to cart</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
